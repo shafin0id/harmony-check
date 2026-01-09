@@ -24,29 +24,54 @@ Most of these issues are preventable if you just know what to look for. That's w
 
 1. Upload the `harmony-check` folder to `/wp-content/plugins/`
 2. Activate through the WordPress admin
-3. Go to **Tools → Harmony Check** to see your report
+3. Go to the **Harmony Check** menu in your WordPress sidebar to see your report
 
 ## What It Checks For
 
-Currently monitors for:
+Currently monitors for **14 different conflict patterns** across multiple categories:
 
-- **Multiple caching plugins** - WP Super Cache, W3 Total Cache, WP Rocket, etc.
-- **Multiple SEO plugins** - Yoast, Rank Math, All in One SEO, etc.
-- **Stacked page builders** - Elementor + Divi running simultaneously
-- **WooCommerce + security conflicts** - Overly aggressive firewall rules breaking checkout
-- **Jetpack feature duplication** - Running Jetpack plus standalone versions of its features
-- **Multiple form builders** - Contact Form 7, WPForms, Ninja Forms all active at once
+### Performance & Caching
+- **Multiple page caching plugins** - WP Super Cache, W3 Total Cache, WP Rocket, LiteSpeed Cache, Comet Cache, Hyper Cache
+- **Double minification** - Autoptimize, Fast Velocity Minify, W3 Total Cache, WP Rocket, SG Optimizer
+- **Multiple image optimizers** - Smush, Imagify, EWWW, ShortPixel, TinyPNG
 
-This isn't an exhaustive list. It's just the common stuff that shows up repeatedly in support tickets.
+### SEO & Analytics
+- **Multiple SEO plugins** - Yoast, Rank Math, All in One SEO, The SEO Framework, SmartCrawl
+- **Double analytics tracking** - Multiple Google Analytics plugins running simultaneously
+
+### Security & SSL
+- **HTTPS enforcement conflicts** - Really Simple SSL, Wordfence, iThemes Security, SG Optimizer
+- **Multiple firewalls** - Wordfence, iThemes Security, All In One WP Security, NinjaFirewall
+
+### Page Builders & Performance
+- **Stacked page builders** - Elementor, Divi, Beaver Builder, Oxygen running together
+
+### Backups & Email
+- **Multiple backup solutions** - UpdraftPlus, BackWPup, BackupWordPress, Duplicator
+- **Multiple SMTP plugins** - WP Mail SMTP, Post SMTP, Easy WP SMTP, FluentSMTP
+
+### E-commerce
+- **WooCommerce PayPal conflicts** - Old PayPal Express vs new PayPal Payments plugin
+
+### Known Bad Combinations
+- **Jetpack feature duplication** - Jetpack plus standalone Akismet or VaultPress
+- **Object cache conflicts** - Redis and Memcached plugins both active
+
+### Debug Log Analysis
+- **Fatal PHP errors** - Automatically scans debug.log for recent fatal errors
+- **Database errors** - Detects WordPress database connection issues
+
+This isn't an exhaustive list. It's the common stuff that shows up repeatedly in support tickets.
 
 ## How It Works
 
-1. Checks your active plugins against a predefined list of conflict patterns
-2. Shows admin notices if it finds something worth mentioning
-3. Logs findings to `debug.log` if `WP_DEBUG` is enabled
-4. Provides a report page at **Tools → Harmony Check**
+1. Checks your active plugins (including network-activated plugins on Multisite) against a predefined list of conflict patterns
+2. Analyzes your `debug.log` file for recent fatal errors and database issues (if WP_DEBUG is enabled)
+3. Shows color-coded admin notices based on severity (critical = red, warning = yellow, info = blue)
+4. Logs findings to `debug.log` if `WP_DEBUG` is enabled
+5. Provides a detailed report page at the **Harmony Check** menu (with wrench/tools icon)
 
-Notices are dismissible and won't nag you forever.
+Notices are dismissible and won't nag you forever. The plugin is **multisite-compatible** and works on both single-site and network installations.
 
 ## Limitations
 

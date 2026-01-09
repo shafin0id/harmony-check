@@ -62,14 +62,30 @@ class Plugin {
 	 */
 	private function render_conflict_notice( $conflict ) {
 		$notice_id = 'harmony-check-' . esc_attr( $conflict['id'] );
+		
+		// Map severity to WordPress notice class
+		$notice_class = 'notice-warning'; // default
+		if ( isset( $conflict['severity'] ) ) {
+			switch ( $conflict['severity'] ) {
+				case 'critical':
+					$notice_class = 'notice-error';
+					break;
+				case 'warning':
+					$notice_class = 'notice-warning';
+					break;
+				case 'info':
+					$notice_class = 'notice-info';
+					break;
+			}
+		}
 		?>
-		<div class="notice notice-warning is-dismissible" id="<?php echo $notice_id; ?>">
+		<div class="notice <?php echo esc_attr( $notice_class ); ?> is-dismissible" id="<?php echo $notice_id; ?>">
 			<p>
 				<strong><?php echo esc_html( $conflict['title'] ); ?></strong>
 			</p>
 			<p><?php echo esc_html( $conflict['message'] ); ?></p>
 			<p>
-				<a href="<?php echo esc_url( admin_url( 'tools.php?page=harmony-check' ) ); ?>">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=harmony-check' ) ); ?>">
 					View details
 				</a>
 				|
@@ -114,7 +130,7 @@ class Plugin {
 				<p>
 					<strong>Harmony Check is now active.</strong> 
 					It's quietly monitoring your plugin setup. 
-					<a href="<?php echo esc_url( admin_url( 'tools.php?page=harmony-check' ) ); ?>">View report</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=harmony-check' ) ); ?>">View report</a>
 				</p>
 			</div>
 			<?php

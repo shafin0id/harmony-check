@@ -16,15 +16,17 @@ class AdminPage {
 	}
 
 	/**
-	 * Register the admin page under Tools
+	 * Register the admin menu
 	 */
 	public function register_menu() {
-		add_management_page(
-			'Harmony Check',
-			'Harmony Check',
-			'manage_options',
-			'harmony-check',
-			[ $this, 'render_page' ]
+		add_menu_page(
+			__( 'Harmony Check', 'harmony-check' ),        // Page title
+			__( 'Harmony Check', 'harmony-check' ),        // Menu title
+			'manage_options',                               // Capability
+			'harmony-check',                                // Menu slug
+			[ $this, 'render_page' ],                      // Callback function
+			'dashicons-admin-tools',                        // Icon (diagnostic/monitoring tool)
+			80                                              // Position
 		);
 	}
 
@@ -32,7 +34,7 @@ class AdminPage {
 	 * Load minimal CSS for the admin page
 	 */
 	public function enqueue_styles( $hook ) {
-		if ( 'tools_page_harmony-check' !== $hook ) {
+		if ( 'toplevel_page_harmony-check' !== $hook ) {
 			return;
 		}
 
@@ -122,13 +124,17 @@ class AdminPage {
 							<p><?php echo esc_html( $conflict['message'] ); ?></p>
 
 							<div class="harmony-detected-plugins">
-								<strong>Detected plugins:</strong><br>
+								<strong><?php echo isset( $conflict['type'] ) && $conflict['type'] === 'log_error' ? 'Source:' : 'Detected plugins:'; ?></strong><br>
 								<?php foreach ( $conflict['detected'] as $slug ) : ?>
 									<code><?php echo esc_html( $slug ); ?></code>
 								<?php endforeach; ?>
 							</div>
 
-							<p><em>What to do:</em> Review whether you actually need all of these plugins. If possible, consolidate to just one. If you need multiple plugins for different reasons, monitor your site for issues.</p>
+							<?php if ( isset( $conflict['type'] ) && $conflict['type'] === 'plugin_conflict' ) : ?>
+								<p><em>What to do:</em> Review whether you actually need all of these plugins. If possible, consolidate to just one. If you need multiple plugins for different reasons, monitor your site for issues.</p>
+							<?php elseif ( isset( $conflict['type'] ) && $conflict['type'] === 'log_error' ) : ?>
+								<p><em>What to do:</em> Check your debug.log file for the full error details. This may require reviewing recent plugin updates or changes to your site.</p>
+							<?php endif; ?>
 						</div>
 					<?php endforeach; ?>
 				<?php endif; ?>
