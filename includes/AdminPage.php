@@ -25,7 +25,7 @@ class AdminPage {
 			'manage_options',                               // Capability
 			'harmony-check',                                // Menu slug
 			[ $this, 'render_page' ],                      // Callback function
-			'dashicons-admin-tools',                        // Icon (diagnostic/monitoring tool)
+			'dashicons-code-standards',                        // Icon (diagnostic/monitoring tool)
 			80                                              // Position
 		);
 	}

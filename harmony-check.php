@@ -3,7 +3,7 @@
  * Plugin Name: Harmony Check
  * Plugin URI: https://github.com/shafinoid/harmony-check
  * Description: Quietly monitors your plugin setup for common conflicts and compatibility issues based on real support experience.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Shafinoid
  * Author URI: https://shafinoid.com
  * License: GPL v2 or later
